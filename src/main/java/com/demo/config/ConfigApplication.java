@@ -6,6 +6,8 @@ package com.demo.config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * The application for the config server.
@@ -13,6 +15,8 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  */
 @SpringBootApplication
 @EnableConfigServer
+@ComponentScan(basePackages="com.demo")
+@ImportResource(locations={"classpath:applicationContext-*.xml"})
 public class ConfigApplication {
 
 	/**
