@@ -2,6 +2,11 @@ spring:
   application:
     name: service-config
   profiles.active: composite
+management:
+  endpoints:
+    web:
+      exposure: 
+        include: 'bus-refresh'
 ---
 server:
   port: 9000
