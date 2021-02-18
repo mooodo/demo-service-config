@@ -99,7 +99,7 @@ spring:
         jdbc: true
 server:
   port: ${SERVICE_PORT:9000}
-spring.cloud.config.server.jdbc.sql: SELECT key1, value1 from config_properties where APPLICATION=? and PROFILE=? and LABEL=?
+spring.cloud.config.server.jdbc.sql: SELECT `key`, `value` from `config` where APPLICATION=? and PROFILE=? and LABEL=?
 eureka:
   instance:
     prefer-ip-address: true
