@@ -80,7 +80,7 @@ spring:
 spring:
   profiles: jdbc
   rabbitmq:
-    host: rabbitmq-0.rabbitmq
+    host: rabbitmq-cluster
     port: 5672
     username: guest
     password: guest
