@@ -35,6 +35,8 @@ spring:
     database: 0
     host: redis-0.redis
     port: 6379
+    # cluster:
+    #   nodes: redis-cluster-0.redis-cluster:6379,redis-cluster-1.redis-cluster:6379,redis-cluster-2.redis-cluster:6379
     password: 
     pool:
       maxActive: 200
