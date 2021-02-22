@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: demo-service-config 
-        image: 172.31.87.111:5000/demo-service-config
+        image: repository:5000/demo-service-config
         imagePullPolicy: Always
         args: ["--spring.profiles.active=jdbc"]
 
