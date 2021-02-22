@@ -46,6 +46,7 @@ spring:
     timeout: 1000
   rabbitmq:
     host: rabbitmq-0.rabbitmq
+    # host: rabbit-cluster
     port: 5672
     username: guest
     password: guest
