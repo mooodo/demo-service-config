@@ -1,0 +1,29 @@
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5 #default 30s
+zuul:
+  ribbonIsolationStrategy: THREAD # default: SEMAPHORE
+  retryable: true
+  routes:
+    customer:
+      path: /customer/**
+      serviceId: service-customer
+      stripPrefix: true
+    product:
+      path: /product/**
+      serviceId: service-product
+      stripPrefix: true
+    supplier:
+      path: /supplier/**
+      serviceId: service-supplier
+      stripPrefix: true
+    order:
+      path: /order/**
+      serviceId: service-order
+      stripPrefix: true
+ribbon:
+  connectTimeout: 2000 # 请求连接的超时时间
+  readTimeout: 5000 # 请求处理的超时时间
+  maxAutoRetries: 1 # 对当前实例的重试次数
+  maxAutoRetriesNextServer: 3# 切换实例的重试次数
+  okToRetryOnAllOperations: true# 对所有操作请求都进行重试

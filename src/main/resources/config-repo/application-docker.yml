@@ -1,0 +1,70 @@
+eureka:
+  instance:
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 10 #default 90s
+    lease-renewal-interval-in-seconds: 5 #default 30s
+  client:
+    service-url:
+      defaultZone: http://eureka-0.eureka:9001/eureka/,http://eureka-1.eureka:9001/eureka/,http://eureka-2.eureka:9001/eureka/
+  healthcheck:
+    enabled: true
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  zipkin:
+    sender:
+      type: rabbit
+    rabbitmq:
+      queue: zipkin
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0 # 采样比例100%
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://mysql-0.mysql:3306/demo?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: demo
+    password: 1234
+    initialize: true
+    continueOnError: true
+  redis:
+    database: 0
+    host: redis-0.redis
+    port: 6379
+    # cluster:
+    #   nodes: redis-cluster-0.redis-cluster:6379,redis-cluster-1.redis-cluster:6379,redis-cluster-2.redis-cluster:6379
+    password: 
+    pool:
+      maxActive: 200
+      maxWait: -1
+      maxIdel: 10
+      minIdel: 0
+    timeout: 1000
+  rabbitmq:
+    host: rabbitmq-0.rabbitmq
+    # host: rabbit-cluster
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    bus:
+      trace:
+        enabled: true
+    loadbalancer:
+      retry:
+        enabled: true
+ribbon:
+  connectTimeout: 2000 # 请求连接的超时时间
+  readTimeout: 5000 # 请求处理的超时时间
+  maxAutoRetries: 0 # 对当前实例的重试次数
+  maxAutoRetriesNextServer: 2# 切换实例的重试次数
+  okToRetryOnAllOperations: true# 对所有操作请求都进行重试
+management:
+  endpoints:
+    web:
+      exposure: 
+        include: 'hystrix.stream'

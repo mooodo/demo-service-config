@@ -1,0 +1,111 @@
+spring:
+  application:
+    name: service-config
+  profiles.active: composite
+management:
+  endpoints:
+    web:
+      exposure: 
+        include: 'bus-refresh'
+---
+server:
+  port: 9000
+spring:
+  profiles: composite
+  cloud:
+    config:
+      server:
+        composite:
+        - type: native
+          search-locations: "classpath:config-repo"
+        bootstrap: true
+    stream:
+      bindings:
+        springCloudBusOutput:
+          destination: springCloudBusInput
+          contentType: application/json
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9001/eureka/
+---
+server:
+  port: 9000
+spring:
+  profiles: dev
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mooodo/demo-service-config.git
+          searchPaths: src/main/resources/config-repo
+          force-pull: true
+        bootstrap: true
+    stream:
+      bindings:
+        springCloudBusOutput:
+          destination: springCloudBusInput
+          contentType: application/json
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+---
+server:
+  port: ${SERVICE_PORT:9000}
+spring:
+  profiles: docker
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mooodo/demo-service-config.git
+          searchPaths: src/main/resources/config-repo
+          force-pull: true
+        bootstrap: true
+    stream:
+      bindings:
+        springCloudBusOutput:
+          destination: springCloudBusInput
+          contentType: application/json
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+---
+spring:
+  profiles: jdbc
+  rabbitmq:
+    host: rabbitmq-0.rabbitmq
+    # host: rabbit-cluster
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://mysql-0.mysql:3306/config?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: config
+    password: config1234
+    initialize: true
+    continueOnError: true
+  cloud:
+    config:
+      label: master
+      server:
+        jdbc: true
+server:
+  port: ${SERVICE_PORT:9000}
+spring.cloud.config.server.jdbc.sql: SELECT `key`, `value` from `config` where APPLICATION=? and PROFILE=? and LABEL=? and available='Y'
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eureka-0.eureka:9001/eureka/,http://eureka-1.eureka:9001/eureka/,http://eureka-2.eureka:9001/eureka/
+  healthcheck:
+    enabled: true
