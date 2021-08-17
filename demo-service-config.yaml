@@ -16,9 +16,19 @@ spec:
       labels:
         app: demo-service-config
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                      - demo-service-config
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: demo-service-config 
-        image: repository:5000/demo-service-config
+        image: repository:5000/demo-service-config:<VERSION>
         imagePullPolicy: Always
         args: ["--spring.profiles.active=jdbc"]
 
