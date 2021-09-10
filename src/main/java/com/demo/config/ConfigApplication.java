@@ -20,7 +20,7 @@ import org.springframework.context.annotation.ImportResource;
 public class ConfigApplication {
 
 	/**
-	 * @param args
+	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(ConfigApplication.class, args);
